@@ -1,0 +1,34 @@
+{
+  "name": "restructuredpython",
+  "displayName": "reStructuredPython",
+  "description": "Support for the language reStructuredPython",
+  "version": "0.0.1",
+  "publisher": "RihaanMeher",
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/sharktide/repython-vs"
+  },
+  "engines": {
+    "vscode": "^1.97.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "restructuredpython",
+      "aliases": ["reStructuredPython", "restructuredpython"],
+      "extensions": [".repy",".d.repy",".f.repy",".repyconfig"],
+      "configuration": "./language-configuration.json",
+      "icon": {
+        "light": "./icons/icon.png",
+        "dark": "./icons/icon.png"
+      }
+    }],
+    "grammars": [{
+      "language": "restructuredpython",
+      "scopeName": "source.restructuredpython",
+      "path": "./syntaxes/restructuredpython.tmLanguage.json"
+    }]
+  }
+}

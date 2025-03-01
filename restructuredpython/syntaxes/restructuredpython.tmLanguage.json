@@ -1,0 +1,84 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "reStructuredPython",
+	"patterns": [
+	  {
+		"include": "#keywords"
+	  },
+	  {
+		"include": "#numbers"
+	  },
+	  {
+		"include": "#strings"
+	  },
+	  {
+		"include": "#comments"
+	  },
+	  {
+		"include": "#braces"
+	  },
+	  {
+		"include": "#parentheses"
+	  }
+	],
+	"repository": {
+	  "keywords": {
+		"patterns": [
+		  {
+			"name": "keyword.control.restructuredpython",
+			"match": "\\b(if|for|while|def|elif|else)\\b"
+		  }
+		]
+	  },
+	  "numbers": {
+		"patterns": [
+		  {
+			"name": "constant.numeric.restructuredpython",
+			"match": "\\b\\d+\\b"
+		  }
+		]
+	  },
+	  "strings": {
+		"patterns": [
+		  {
+			"name": "string.quoted.double.restructuredpython",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+			  {
+				"name": "constant.character.escape.restructuredpython",
+				"match": "\\\\."
+			  }
+			]
+		  }
+		]
+	  },
+	  "comments": {
+		"patterns": [
+		  {
+			"name": "comment.line.restructuredpython",
+			"begin": "#",
+			"end": "$"
+		  }
+		]
+	  },
+	  "braces": {
+		"patterns": [
+		  {
+			"name": "punctuation.definition.block.restructuredpython",
+			"match": "[{}]"
+		  }
+		]
+	  },
+	  "parentheses": {
+		"patterns": [
+		  {
+			"name": "punctuation.definition.group.restructuredpython",
+			"match": "[()]"
+		  }
+		]
+	  }
+	},
+	"scopeName": "source.restructuredpython"
+  }
+  
