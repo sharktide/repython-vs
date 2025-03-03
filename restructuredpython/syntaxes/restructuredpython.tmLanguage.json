@@ -6,6 +6,12 @@
 		"include": "#keywords"
 	  },
 	  {
+		"include": "#functions"
+	  },
+	  {
+		"include": "#variables"
+	  },
+	  {
 		"include": "#numbers"
 	  },
 	  {
@@ -30,6 +36,22 @@
 		  }
 		]
 	  },
+	  "functions": {
+		"patterns": [
+		  {
+			"name": "entity.name.function.restructuredpython",
+			"match": "\\bdef\\s+([A-Za-z_][A-Za-z0-9_]*)\\b"
+		  }
+		]
+	  },
+	  "variables": {
+		"patterns": [
+		  {
+			"name": "variable.other.restructuredpython",
+			"match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+		  }
+		]
+	  },
 	  "numbers": {
 		"patterns": [
 		  {
@@ -42,8 +64,41 @@
 		"patterns": [
 		  {
 			"name": "string.quoted.double.restructuredpython",
+			"begin": "\"\"\"",
+			"end": "\"\"\"",
+			"patterns": [
+			  {
+				"name": "constant.character.escape.restructuredpython",
+				"match": "\\\\."
+			  }
+			]
+		  },
+		  {
+			"name": "string.quoted.single.restructuredpython",
+			"begin": "'''",
+			"end": "'''",
+			"patterns": [
+			  {
+				"name": "constant.character.escape.restructuredpython",
+				"match": "\\\\."
+			  }
+			]
+		  },
+		  {
+			"name": "string.quoted.double.singleline.restructuredpython",
 			"begin": "\"",
 			"end": "\"",
+			"patterns": [
+			  {
+				"name": "constant.character.escape.restructuredpython",
+				"match": "\\\\."
+			  }
+			]
+		  },
+		  {
+			"name": "string.quoted.single.singleline.restructuredpython",
+			"begin": "'",
+			"end": "'",
 			"patterns": [
 			  {
 				"name": "constant.character.escape.restructuredpython",
@@ -59,6 +114,28 @@
 			"name": "comment.line.restructuredpython",
 			"begin": "#",
 			"end": "$"
+		  },
+		  {
+			"name": "comment.block.documentation.restructuredpython",
+			"begin": "\"\"\"",
+			"end": "\"\"\"",
+			"patterns": [
+			  {
+				"name": "comment.block.documentation.restructuredpython",
+				"match": ".+"
+			  }
+			]
+		  },
+		  {
+			"name": "comment.block.documentation.restructuredpython",
+			"begin": "'''",
+			"end": "'''",
+			"patterns": [
+			  {
+				"name": "comment.block.documentation.restructuredpython",
+				"match": ".+"
+			  }
+			]
 		  }
 		]
 	  },
