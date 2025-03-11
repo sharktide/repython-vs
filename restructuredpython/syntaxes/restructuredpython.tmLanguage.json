@@ -32,7 +32,7 @@
 		"patterns": [
 		  {
 			"name": "keyword.control.restructuredpython",
-			"match": "\\b(if|for|while|def|elif|else)\\b"
+			"match": "\\b(if|for|while|def|elif|else|class|with|import|include)\\b"
 		  }
 		]
 	  },

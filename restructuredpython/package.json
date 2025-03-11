@@ -2,7 +2,7 @@
   "name": "restructuredpython",
   "displayName": "reStructuredPython",
   "description": "Support for the language reStructuredPython",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "publisher": "RihaanMeher",
   "icon": "icons/icon.png",
   "repository": {
@@ -19,7 +19,7 @@
     "languages": [{
       "id": "restructuredpython",
       "aliases": ["reStructuredPython", "restructuredpython"],
-      "extensions": [".repy",".d.repy",".f.repy",".repyconfig"],
+      "extensions": [".repy",".d.repy",".cdata",".f.repy",".repyconfig"],
       "configuration": "./language-configuration.json",
       "icon": {
         "light": "./icons/icon.png",
