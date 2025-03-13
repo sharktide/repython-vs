@@ -1,8 +1,8 @@
-# Change Log
+# Changelog
 
-All notable changes to the "restructuredpython" extension will be documented in this file.
+All notable changes to the "restructuredpython" extension will be documented in this file. Versions older than 1.2.0 will not be documented.
 
 
-## [Unreleased]
+## 1.2.0
 
-- Initial release
+- Remodeled syntax highlighting

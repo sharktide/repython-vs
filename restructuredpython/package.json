@@ -2,7 +2,7 @@
   "name": "restructuredpython",
   "displayName": "reStructuredPython",
   "description": "Support for the language reStructuredPython",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "publisher": "RihaanMeher",
   "icon": "icons/icon.png",
   "repository": {

@@ -1,161 +1,175 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "reStructuredPython",
-	"patterns": [
-	  {
-		"include": "#keywords"
-	  },
-	  {
-		"include": "#functions"
-	  },
-	  {
-		"include": "#variables"
-	  },
-	  {
-		"include": "#numbers"
-	  },
-	  {
-		"include": "#strings"
-	  },
-	  {
-		"include": "#comments"
-	  },
-	  {
-		"include": "#braces"
-	  },
-	  {
-		"include": "#parentheses"
-	  }
-	],
-	"repository": {
-	  "keywords": {
-		"patterns": [
-		  {
-			"name": "keyword.control.restructuredpython",
-			"match": "\\b(if|for|while|def|elif|else|class|with|import|include)\\b"
-		  }
-		]
-	  },
-	  "functions": {
-		"patterns": [
-		  {
-			"name": "entity.name.function.restructuredpython",
-			"match": "\\bdef\\s+([A-Za-z_][A-Za-z0-9_]*)\\b"
-		  }
-		]
-	  },
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "reStructuredPython",
+    "patterns": [
+      { "include": "#storage" },
+      { "include": "#keywords" },
+      { "include": "#functions" },
+      { "include": "#variables" },
+      { "include": "#numbers" },
+      { "include": "#strings" },
+      { "include": "#comments" },
+      { "include": "#braces" },
+      { "include": "#parentheses" }
+    ],
+    "repository": {
+      "storage": {
+        "patterns": [
+          {
+            "name": "storage.control.restructuredpython",
+            "match": "\\b(if|for|while|def|elif|else|class|with|import|include|match|case|None|and|as|global|from|in|is|lambda|nonlocal|not|or)\\b|\\|>"
+
+          }
+        ]
+      },
+      "keywords": {
+        "patterns": [
+          {
+            "name": "keyword.control.restructuredpython",
+            "match": "\\b(True|False|pass|assert|async|await|break|continue|del|raise|return|yield)\\b"
+          }
+        ]
+      },
+      "functions": {
+        "patterns": [
+          {
+            "name": "entity.name.function.restructuredpython",
+            "match": "\\bdef\\s+([A-Za-z_][A-Za-z0-9_]*)\\b"
+          }
+        ]
+      },
 	  "variables": {
 		"patterns": [
 		  {
-			"name": "variable.other.restructuredpython",
-			"match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+			"name": "variable.restructuredpython",
+			"match": "(?<!\\.|\\d)\\b[A-Za-z_][A-Za-z0-9_]*\\b(?!\\s*\\()"
 		  }
 		]
 	  },
-	  "numbers": {
-		"patterns": [
-		  {
-			"name": "constant.numeric.restructuredpython",
-			"match": "\\b\\d+\\b"
-		  }
-		]
-	  },
-	  "strings": {
-		"patterns": [
-		  {
-			"name": "string.quoted.double.restructuredpython",
-			"begin": "\"\"\"",
-			"end": "\"\"\"",
-			"patterns": [
-			  {
-				"name": "constant.character.escape.restructuredpython",
-				"match": "\\\\."
-			  }
-			]
-		  },
-		  {
-			"name": "string.quoted.single.restructuredpython",
-			"begin": "'''",
-			"end": "'''",
-			"patterns": [
-			  {
-				"name": "constant.character.escape.restructuredpython",
-				"match": "\\\\."
-			  }
-			]
-		  },
-		  {
-			"name": "string.quoted.double.singleline.restructuredpython",
-			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-			  {
-				"name": "constant.character.escape.restructuredpython",
-				"match": "\\\\."
-			  }
-			]
-		  },
-		  {
-			"name": "string.quoted.single.singleline.restructuredpython",
-			"begin": "'",
-			"end": "'",
-			"patterns": [
-			  {
-				"name": "constant.character.escape.restructuredpython",
-				"match": "\\\\."
-			  }
-			]
-		  }
-		]
-	  },
-	  "comments": {
-		"patterns": [
-		  {
-			"name": "comment.line.restructuredpython",
-			"begin": "#",
-			"end": "$"
-		  },
-		  {
-			"name": "comment.block.documentation.restructuredpython",
-			"begin": "\"\"\"",
-			"end": "\"\"\"",
-			"patterns": [
-			  {
-				"name": "comment.block.documentation.restructuredpython",
-				"match": ".+"
-			  }
-			]
-		  },
-		  {
-			"name": "comment.block.documentation.restructuredpython",
-			"begin": "'''",
-			"end": "'''",
-			"patterns": [
-			  {
-				"name": "comment.block.documentation.restructuredpython",
-				"match": ".+"
-			  }
-			]
-		  }
-		]
-	  },
-	  "braces": {
-		"patterns": [
-		  {
-			"name": "punctuation.definition.block.restructuredpython",
-			"match": "[{}]"
-		  }
-		]
-	  },
-	  "parentheses": {
-		"patterns": [
-		  {
-			"name": "punctuation.definition.group.restructuredpython",
-			"match": "[()]"
-		  }
-		]
-	  }
-	},
-	"scopeName": "source.restructuredpython"
-  }
-  
+      "numbers": {
+        "patterns": [
+          {
+            "name": "constant.numeric.restructuredpython",
+            "match": "\\b\\d+\\b"
+          }
+        ]
+      },
+      "strings": {
+        "patterns": [
+          {
+            "name": "string.quoted.double.restructuredpython",
+            "begin": "\"\"\"",
+            "end": "\"\"\"",
+            "patterns": [
+              {
+                "name": "constant.character.escape.restructuredpython",
+                "match": "\\\\."
+              }
+            ]
+          },
+          {
+            "name": "string.quoted.single.restructuredpython",
+            "begin": "'''",
+            "end": "'''",
+            "patterns": [
+              {
+                "name": "constant.character.escape.restructuredpython",
+                "match": "\\\\."
+              }
+            ]
+          },
+          {
+            "name": "string.quoted.double.singleline.restructuredpython",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+              {
+                "name": "constant.character.escape.restructuredpython",
+                "match": "\\\\."
+              }
+            ]
+          },
+          {
+            "name": "string.quoted.single.singleline.restructuredpython",
+            "begin": "'",
+            "end": "'",
+            "patterns": [
+              {
+                "name": "constant.character.escape.restructuredpython",
+                "match": "\\\\."
+              }
+            ]
+          }
+        ]
+      },
+      "comments": {
+        "patterns": [
+          {
+            "name": "comment.line.restructuredpython",
+            "begin": "#",
+            "end": "$"
+          },
+          {
+            "name": "comment.block.documentation.restructuredpython",
+            "begin": "\"\"\"",
+            "end": "\"\"\"",
+            "patterns": [
+              {
+                "name": "comment.block.documentation.restructuredpython",
+                "match": ".+"
+              }
+            ]
+          },
+          {
+            "name": "comment.block.documentation.restructuredpython",
+            "begin": "'''",
+            "end": "'''",
+            "patterns": [
+              {
+                "name": "comment.block.documentation.restructuredpython",
+                "match": ".+"
+              }
+            ]
+          },
+          {
+            "name": "comment.block.restructuredpython",
+            "begin": "/\\*",
+            "end": "\\*/",
+            "beginCaptures": {
+              "0": {
+                "name": "punctuation.definition.comment.begin.restructuredpython"
+              }
+            },
+            "endCaptures": {
+              "0": {
+                "name": "punctuation.definition.comment.end.restructuredpython"
+              }
+            },
+            "patterns": [
+              {
+                "name": "comment.block.documentation.restructuredpython",
+                "match": "/\\*\\*"
+              }
+            ]
+          }
+        ]
+      },
+      "braces": {
+        "patterns": [
+          {
+            "name": "punctuation.definition.block.restructuredpython",
+            "match": "[{}]"
+          }
+        ]
+      },
+      "parentheses": {
+        "patterns": [
+          {
+            "name": "punctuation.definition.group.restructuredpython",
+            "match": "[()]"
+          }
+        ]
+      }
+    },
+    "scopeName": "source.restructuredpython"
+}
