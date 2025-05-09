@@ -3,3 +3,5 @@ restructuredpython/restructuredpython-0.0.1.vsix
 restructuredpython/restructuredpython-1.1.0.vsix
 restructuredpython/restructuredpython-1.1.1.vsix
 *.vsix
+
+node_modules/*

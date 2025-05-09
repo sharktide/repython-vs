@@ -2,3 +2,4 @@
 * text=auto
 
 *.json linguist-detectable
+*.js linguist-generated
