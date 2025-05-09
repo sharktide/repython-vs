@@ -12,6 +12,10 @@
   "engines": {
     "vscode": "^1.90.0"
   },
+  "main": "extension.ts",
+  "activationEvents": [
+    "onLanguage:restructuredpython"
+  ],
   "categories": [
     "Programming Languages"
   ],
