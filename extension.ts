@@ -20,13 +20,13 @@ export function activate(context: vscode.ExtensionContext) {
         'sorted', 'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'vars', 'zip'
     ];
 
-    // reStructuredPython-Specific Features
+    // reStructuredPython Features
     const reStructuredPythonFeatures = [
         'include', 'define', 'metadata', 'section', 'directive', 'index', 'note',
         'warning', 'todo', 'deprecated', 'code-block', 'figure', 'table', 'contents'
     ];
 
-    // reStructuredPython Built-in Decorators
+    // reStructuredPython Built-in Decorators (Only Available After `include 'decorators'`)
     const availableDecorators = {
         'decorators.timer': ['timer'],
         'decorators.logging': ['logging'],
@@ -36,11 +36,14 @@ export function activate(context: vscode.ExtensionContext) {
         'decorators': ['decorators.timer', 'decorators.logging', 'decorators.memoization', 'decorators.retry', 'decorators.access_control']
     };
 
-    // Detect included decorators using regex for efficiency
+    // Variable List (Keeps track of variables declared in the document)
+    let declaredVariables: string[] = [];
+
+    // Detect included decorators in the document
     function getActiveDecorators(document: vscode.TextDocument): vscode.CompletionItem[] {
         let text = document.getText();
         let includedModules = Object.keys(availableDecorators).filter(module => new RegExp(`include\\s+'${module}'`).test(text));
-        
+
         return includedModules.flatMap(module =>
             availableDecorators[module].map(d => {
                 let item = new vscode.CompletionItem(d, vscode.CompletionItemKind.Function);
@@ -50,11 +53,30 @@ export function activate(context: vscode.ExtensionContext) {
         );
     }
 
+    // Detect Variable Declarations (e.g., `x = 10`, `my_var = "hello"`)
+    function getDeclaredVariables(document: vscode.TextDocument): void {
+        let text = document.getText();
+        
+        // Regular expression to match variable declarations (simple case)
+        const varRegex = /\b([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*/g;
+        let match;
+        
+        declaredVariables = []; // Reset variable list
+        
+        while ((match = varRegex.exec(text)) !== null) {
+            // Push the variable name into the list
+            declaredVariables.push(match[1]);
+        }
+    }
+
     // Register CompletionItemProvider
     let provider = vscode.languages.registerCompletionItemProvider(
         { language: 'restructuredpython' },
         {
             provideCompletionItems(document: vscode.TextDocument) {
+                // Refresh the list of declared variables each time the document changes
+                getDeclaredVariables(document);
+
                 let decorators = getActiveDecorators(document);
                 let functions = pythonFunctions.map(f => {
                     let item = new vscode.CompletionItem(f, vscode.CompletionItemKind.Function);
@@ -65,8 +87,15 @@ export function activate(context: vscode.ExtensionContext) {
 
                 let keywords = pythonKeywords.map(k => new vscode.CompletionItem(k, vscode.CompletionItemKind.Keyword));
                 let features = reStructuredPythonFeatures.map(r => new vscode.CompletionItem(r, vscode.CompletionItemKind.Keyword));
-                
-                return [...decorators, ...functions, ...keywords, ...features];
+
+                // Provide variable completions based on declared variables
+                let variableCompletions = declaredVariables.map(variable => {
+                    let item = new vscode.CompletionItem(variable, vscode.CompletionItemKind.Variable);
+                    item.documentation = new vscode.MarkdownString(`Variable: \`${variable}\``);
+                    return item;
+                });
+
+                return [...decorators, ...functions, ...keywords, ...features, ...variableCompletions];
             }
         },
         '@', '.' // Autocomplete triggers on decorators and dot notation

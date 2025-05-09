@@ -30,21 +30,23 @@ function activate(context) {
         'print', 'property', 'range', 'repr', 'reversed', 'round', 'set', 'setattr', 'slice',
         'sorted', 'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'vars', 'zip'
     ];
-    // reStructuredPython-Specific Features
+    // reStructuredPython Features
     var reStructuredPythonFeatures = [
         'include', 'define', 'metadata', 'section', 'directive', 'index', 'note',
         'warning', 'todo', 'deprecated', 'code-block', 'figure', 'table', 'contents'
     ];
-    // reStructuredPython Built-in Decorators
+    // reStructuredPython Built-in Decorators (Only Available After `include 'decorators'`)
     var availableDecorators = {
-        'decorators.timer': ['timer'],
-        'decorators.logging': ['logging'],
-        'decorators.memoization': ['memoization'],
-        'decorators.retry': ['retry'],
-        'decorators.access_control': ['access_control'],
-        'decorators': ['decorators.timer', 'decorators.logging', 'decorators.memoization', 'decorators.retry', 'decorators.access_control']
+        'decorators.timer': ['@timer'],
+        'decorators.logging': ['@logging'],
+        'decorators.memoization': ['@memoization'],
+        'decorators.retry': ['@retry'],
+        'decorators.access_control': ['@access_control'],
+        'decorators': ['@decorators.timer', '@decorators.logging', '@decorators.memoization', '@decorators.retry', '@decorators.access_control']
     };
-    // Detect included decorators using regex for efficiency
+    // Variable List (Keeps track of variables declared in the document)
+    var declaredVariables = [];
+    // Detect included decorators in the document
     function getActiveDecorators(document) {
         var text = document.getText();
         var includedModules = Object.keys(availableDecorators).filter(function (module) { return new RegExp("include\\s+'".concat(module, "'")).test(text); });
@@ -56,9 +58,23 @@ function activate(context) {
             });
         });
     }
+    // Detect Variable Declarations (e.g., `x = 10`, `my_var = "hello"`)
+    function getDeclaredVariables(document) {
+        var text = document.getText();
+        // Regular expression to match variable declarations (simple case)
+        var varRegex = /\b([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*/g;
+        var match;
+        declaredVariables = []; // Reset variable list
+        while ((match = varRegex.exec(text)) !== null) {
+            // Push the variable name into the list
+            declaredVariables.push(match[1]);
+        }
+    }
     // Register CompletionItemProvider
     var provider = vscode.languages.registerCompletionItemProvider({ language: 'restructuredpython' }, {
         provideCompletionItems: function (document) {
+            // Refresh the list of declared variables each time the document changes
+            getDeclaredVariables(document);
             var decorators = getActiveDecorators(document);
             var functions = pythonFunctions.map(function (f) {
                 var item = new vscode.CompletionItem(f, vscode.CompletionItemKind.Function);
@@ -68,7 +84,13 @@ function activate(context) {
             });
             var keywords = pythonKeywords.map(function (k) { return new vscode.CompletionItem(k, vscode.CompletionItemKind.Keyword); });
             var features = reStructuredPythonFeatures.map(function (r) { return new vscode.CompletionItem(r, vscode.CompletionItemKind.Keyword); });
-            return __spreadArray(__spreadArray(__spreadArray(__spreadArray([], decorators, true), functions, true), keywords, true), features, true);
+            // Provide variable completions based on declared variables
+            var variableCompletions = declaredVariables.map(function (variable) {
+                var item = new vscode.CompletionItem(variable, vscode.CompletionItemKind.Variable);
+                item.documentation = new vscode.MarkdownString("Variable: `".concat(variable, "`"));
+                return item;
+            });
+            return __spreadArray(__spreadArray(__spreadArray(__spreadArray(__spreadArray([], decorators, true), functions, true), keywords, true), features, true), variableCompletions, true);
         }
     }, '@', '.' // Autocomplete triggers on decorators and dot notation
     );
