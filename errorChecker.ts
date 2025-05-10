@@ -6,7 +6,6 @@ export function updateDiagnostics(doc: vscode.TextDocument, declaredVariables: S
     const diagnostics: vscode.Diagnostic[] = [];
     const text = doc.getText();
     const lines = text.split(/\r?\n/);
-
     lines.forEach((line, i) => {
         const lineText = line.trim();
 
@@ -15,6 +14,20 @@ export function updateDiagnostics(doc: vscode.TextDocument, declaredVariables: S
             const range = new vscode.Range(i, line.length - 2, i, line.length);
             diagnostics.push(new vscode.Diagnostic(range, "Unexpected ';' at end of line", vscode.DiagnosticSeverity.Error));
         }
+        const trimmedLine = line.trim();
+
+        // Direct string matching (like Python)
+        if (trimmedLine.startsWith("} else") ||
+            trimmedLine.startsWith("} elif") ||
+            trimmedLine.startsWith("} except") ||
+            trimmedLine.startsWith("} def") ||
+            trimmedLine.startsWith("} class") ||
+            trimmedLine.startsWith("} case")) {
+            
+            const range = new vscode.Range(i, 0, i, line.length);
+            diagnostics.push(new vscode.Diagnostic(range, `Misplaced '${trimmedLine}' statement.`, vscode.DiagnosticSeverity.Error));
+        }
+
     });
 
     collection.set(doc.uri, diagnostics);

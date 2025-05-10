@@ -16,6 +16,17 @@ function updateDiagnostics(doc, declaredVariables, collection) {
             var range = new vscode.Range(i, line.length - 2, i, line.length);
             diagnostics.push(new vscode.Diagnostic(range, "Unexpected ';' at end of line", vscode.DiagnosticSeverity.Error));
         }
+        var trimmedLine = line.trim();
+        // Direct string matching (like Python)
+        if (trimmedLine.startsWith("} else") ||
+            trimmedLine.startsWith("} elif") ||
+            trimmedLine.startsWith("} except") ||
+            trimmedLine.startsWith("} def") ||
+            trimmedLine.startsWith("} class") ||
+            trimmedLine.startsWith("} case")) {
+            var range = new vscode.Range(i, 0, i, line.length);
+            diagnostics.push(new vscode.Diagnostic(range, "Misplaced '".concat(trimmedLine, "' statement."), vscode.DiagnosticSeverity.Error));
+        }
     });
     collection.set(doc.uri, diagnostics);
 }
